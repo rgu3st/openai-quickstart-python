@@ -1,5 +1,4 @@
 import os
-
 import openai
 from flask import Flask, redirect, render_template, request, url_for
 
@@ -13,7 +12,7 @@ def index():
         animal = request.form["animal"]
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=generate_prompt(animal),
+            prompt=generate_jedi_prompt(animal),
             temperature=0.6,
         )
         return redirect(url_for("index", result=response.choices[0].text))
@@ -33,3 +32,19 @@ Animal: {}
 Names:""".format(
         animal.capitalize()
     )
+
+
+def generate_jedi_prompt(name_in):
+    return f"""
+    Suggest three options for changing the provided name that is similar to but the actual name of a jedi.
+    Name: Ben Kendrick
+    Jedi Name: Obi-wan Kendrobi
+    Name: Ben Smith
+    Jedi Name: Kylo Rien
+    Name: Amelia Porter
+    Jedi Name: Darth Potter
+    Name: Mark Williams
+    Jedi Name: Mace Windu
+    Name:{name_in}
+    Jedi Name:
+    """
